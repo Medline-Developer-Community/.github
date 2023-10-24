@@ -18,23 +18,22 @@ jobs:
               SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
             with:
               args: --scan=resource-changes
-    build:
+  build:
         runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Login via Azure CLI
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy to target env step with source code in the Enterprise plan
-        uses: azure/spring-apps-deploy@v1
-        with:
-          azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
-          action: deploy
-          service-name: 'enterprise-services'
-          app-name: 'audit-api'
-          use-staging-deployment: true
-          package: ${{ env.ASC_PACKAGE_PATH }}
-          builder: 'default'
+        steps:
+          - uses: actions/checkout@v4
+          - name: Login via Azure CLI
+            uses: azure/login@v1
+            with:
+              creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+          - name: Deploy to target env step with source code in the Enterprise plan
+            uses: azure/spring-apps-deploy@v1
+            with:
+              azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
+              action: deploy
+              service-name: 'enterprise-services'
+              app-name: 'audit-api'
+              use-staging-deployment: true
+              package: ${{ env.ASC_PACKAGE_PATH }}
+              builder: 'default'
