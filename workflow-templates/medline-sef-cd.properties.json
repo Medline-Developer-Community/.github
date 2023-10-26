@@ -1,1 +1,13 @@
-
+{
+    "name": "Medline SEF micro-service CD Workflow",
+    "description": "Medline Organization DevSecOps CD workflow.",
+    "iconName": "medline",
+    "categories": [
+        "Java","HCL"
+    ],
+    "filePatterns": [
+        "package.json$",
+        "^Dockerfile",
+        ".*\\.md$"
+    ]
+}
