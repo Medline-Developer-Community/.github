@@ -1,9 +1,9 @@
 {
-    "name": "Medline Blue-Green Deployment Strategy",
-    "description": "Medline Blue-Green Deployment Strategy for Azure Spring Enterprise. Integrated with Prisma Cloud Security Scan",
+    "name": "Medline IaC Strategy using Terraform",
+    "description": "Medline build Azure services and components using Terraform Cloud",
     "iconName": "medline",
     "categories": [
-        "Java","HCL"
+        "HCL","HCL"
     ],
     "filePatterns": [
         "package.json$",
