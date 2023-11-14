@@ -1,4 +1,4 @@
-name: Medline Blue-Green Deployment Strategy ( Azure Spring )
+name: Medline Terraform IaC DeSecOps
 
 on:
   push:
@@ -9,33 +9,49 @@ on:
 jobs:
   security:
         runs-on: ubuntu-latest
-        steps:
-          - name: Checkout GitHub Action
-            uses: actions/checkout@v2
-          
-          - name: Security- Run Prisma Cloud Scan
+        steps:           
+
+          # Checkout the repository to the GitHub Actions runner
+          - name: Checkout
+            uses: actions/checkout@v3
+      
+      
+          - name: Run Prisma Cloud
             id: prisma-cloud
-            uses: bridgecrewio/checkov-action@master 
-            env:
-              PRISMA_API_URL: https://api3.prismacloud.io
+            uses: bridgecrewio/checkov-action@master
             with:
               api-key: ${{ secrets.BC_API_KEY }}
-  build:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v4
-          - name: Login via Azure CLI
-            uses: azure/login@v1
+      
+            # Configure Azure CLI
+          #- name: Login via Azure CLI
+           # uses: azure/login@v1
+            #with:
+             # creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+          # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+          - name: Setup Terraform
+            uses: hashicorp/setup-terraform@v1
             with:
-              creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-          - name: Deploy to target env step with source code in the Enterprise plan
-            uses: azure/spring-apps-deploy@v1
-            with:
-              azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
-              action: deploy
-              service-name: ${{ env.AZURE_SPRING_SERVICE_NAME }}
-              app-name: ${{ env.SPRING_APP_NAME }}
-              use-staging-deployment: true
-              package: ${{ env.ASC_PACKAGE_PATH }}
-              builder: 'default'
+              cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      
+          # Change Directory
+          - name: Terraform Check Directory listings
+            run:  ls -ltr
+      
+          # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+          - name: Terraform Init
+            run: terraform init #-backend-config "access_key=${{ secrets.TF_ACCESS_KEY }}"
+      
+          # Checks that all Terraform configuration files adhere to a canonical format
+          - name: Terraform Format
+            run: terraform fmt -check
+      
+          # Generates an execution plan for Terraform
+          - name: Terraform Plan
+            run: terraform plan #-input=false
+      
+            # On push to "main", build or change infrastructure according to Terraform configuration files
+            # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+          - name: Terraform Apply
+            if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+            run: terraform apply -auto-approve -input=false
