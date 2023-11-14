@@ -1,6 +1,6 @@
 {
     "name": "Medline Gradle: Blue-Green Deployment Strategy",
-    "description": "Medline build Azure services and components using Terraform Cloud and code scan using Cheknov Prisma Cloud",
+    "description": "Medline build and deploy Java 17 Gradle project to Azure Spring Apps. Security Scan with Prisma CLoud",
     "iconName": "medline",
     "categories": [
         "Gradle","Java"
