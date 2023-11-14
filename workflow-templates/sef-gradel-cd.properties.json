@@ -1,0 +1,13 @@
+{
+    "name": "Medline Gradel Blue-Green Deployment Strategy",
+    "description": "Medline build Azure services and components using Terraform Cloud and code scan using Cheknov Prisma Cloud",
+    "iconName": "medline",
+    "categories": [
+        "Gradel","Java"
+    ],
+    "filePatterns": [
+        "package.json$",
+        "^Dockerfile",
+        ".*\\.md$"
+    ]
+}
