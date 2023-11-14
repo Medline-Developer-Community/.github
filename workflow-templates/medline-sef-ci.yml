@@ -1,4 +1,4 @@
-name: Medline Enterprise DevSecOps Organization CI
+name: Medline Blue-Green Deployment Strategy ( Azure Spring )
 
 on:
   push:
@@ -10,14 +10,16 @@ jobs:
   security:
         runs-on: ubuntu-latest
         steps:
-          - uses: actions/checkout@v2
-          - name: Run Snyk to check  manifest file for issues
-            continue-on-error: true
-            uses: snyk/actions/iac@master
+          - name: Checkout GitHub Action
+            uses: actions/checkout@v2
+          
+          - name: Security- Run Prisma Cloud Scan
+            id: prisma-cloud
+            uses: bridgecrewio/checkov-action@master 
             env:
-              SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+              PRISMA_API_URL: https://api3.prismacloud.io
             with:
-              args: --scan=resource-changes
+              api-key: ${{ secrets.BC_API_KEY }}
   build:
         runs-on: ubuntu-latest
         steps:
@@ -32,8 +34,8 @@ jobs:
             with:
               azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
               action: deploy
-              service-name: 'enterprise-services'
-              app-name: 'audit-api'
+              service-name: ${{ env.AZURE_SPRING_SERVICE_NAME }}
+              app-name: ${{ env.SPRING_APP_NAME }}
               use-staging-deployment: true
               package: ${{ env.ASC_PACKAGE_PATH }}
               builder: 'default'
