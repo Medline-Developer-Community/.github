@@ -1,9 +1,9 @@
 {
-    "name": "Medline Blue-Green Deployment Strategy",
+    "name": "Medline Maven: Blue-Green Deployment Strategy",
     "description": "Medline Blue-Green Deployment Strategy for Azure Spring Enterprise for JAVA Maven projects. Integrated with Prisma Cloud Security Scan",
     "iconName": "medline",
     "categories": [
-        "Java","HCL"
+        "Java","Maven"
     ],
     "filePatterns": [
         "package.json$",
