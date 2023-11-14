@@ -1,6 +1,6 @@
 {
-    "name": "Medline SEF micro-service CD Workflow",
-    "description": "Medline Organization DevSecOps CD workflow.",
+    "name": "Medline Blue-Green Deployment Strategy",
+    "description": "Medline Blue-Green Deployment Strategy for Azure Spring Enterprise. Integrated with Prisma Cloud Security Scan",
     "iconName": "medline",
     "categories": [
         "Java","HCL"
