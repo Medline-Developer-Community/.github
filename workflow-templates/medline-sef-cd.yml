@@ -1,4 +1,3 @@
-name: Azure Spring Enterprise Deployment
 name: Medline Enterprise DevSecOps Organization CD
 
 on:
@@ -24,16 +23,24 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: maven build, clean
+      - name: Build JAVA Maven by maven build, clean
         run: |
             mvn clean package
+
+       - name: Security- Run Prisma Cloud Scan
+          id: prisma-cloud
+          uses: bridgecrewio/checkov-action@master 
+          env:
+            PRISMA_API_URL: https://api3.prismacloud.io
+          with:
+            api-key: ${{ secrets.BC_API_KEY }}        
 
       - name: Login via Azure CLI
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: deploy to production step with source code in the Enterprise plan
+      - name: Deploy to Azure Spring Enterprise 'Green' step with source code in the Enterprise plan
         uses: azure/spring-apps-deploy@v1
         with:
           azure-subscription: ${{ env.AZURE_SUBSCRIPTION }}
