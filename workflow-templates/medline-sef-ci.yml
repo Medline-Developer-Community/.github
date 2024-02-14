@@ -1,5 +1,4 @@
-name: Medline Terraform IaC DeSecOps
-
+name: Medline Terraform Environment As Code Delivery
 on:
   push:
     branches: [ $default-branch ]
